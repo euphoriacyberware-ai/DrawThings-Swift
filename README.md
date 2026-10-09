@@ -50,7 +50,7 @@ Only DrawThingsClient is required; add the others as you need them. The librarie
 
 ```swift
 dependencies: [
-    .package(url: "https://github.com/euphoriacyberware-ai/DrawThings-Swift", from: "2.2.0")
+    .package(url: "https://github.com/euphoriacyberware-ai/DrawThings-Swift", from: "2.3.0")
 ]
 ```
 
@@ -521,7 +521,7 @@ let request = configuration.makeRequest()                 // prompt, model, LoRA
 ```
 
 - **`ConnectionManager`** keeps `ServerProfile`s (host, port, TLS, shared secret), connects with an echo that checks the shared secret, and exposes `activeService`, `connectionState` and `serverRequiresSharedSecret`. Profiles are saved in `UserDefaults` and their shared secrets in the Keychain.
-- **`ModelsManager`** lists the server's checkpoints, LoRAs, ControlNets, textual inversions and upscalers (with model browsing on). With `bridgeMode` it adds the official and community models available through Draw Things+, bundled as `CloudModels`. `compatibleLoRAs` and `compatibleControlNets` follow the selected checkpoint's version.
+- **`ModelsManager`** lists the server's checkpoints, LoRAs, ControlNets, textual inversions and upscalers (with model browsing on). With `bridgeMode` it adds the official and community models available through Draw Things+, bundled as `CloudModels` and refreshed weekly from [dt-models](https://github.com/kcjerrell/dt-models). Models Draw Things has replaced have `deprecated == true`; the app hides them from its lists. `compatibleLoRAs` and `compatibleControlNets` follow the selected checkpoint's version.
 - **`ConfigurationManager`** holds the prompt, selected models, LoRAs and ControlNets, and the `DrawThingsConfiguration`. `loadFromJSON(_:)` and `exportToJSON()` read and write Draw Things JSON, for copy and paste with the app through the system pasteboard.
 - **Presets**: `DimensionPresets`, `SamplerPresets` (display names for every sampler) and `SavedConfiguration` (a SwiftData model for saved configurations).
 
@@ -554,14 +554,14 @@ swift test
 The tests include an in-process gRPC server that stands in for Draw Things, so they need no running server. The four tests that encode video are skipped on GitHub Actions, where `AVAssetWriter` crashes intermittently on the hosted macOS VMs; run them locally.
 
 - `Scripts/generate.sh <path-to-draw-things-community>` regenerates the protobuf, gRPC and FlatBuffers code in `Sources/DrawThingsClient/Generated` (and the test server stubs) from the protocol schemas in a local checkout of [draw-things-community](https://github.com/drawthingsai/draw-things-community). The schemas themselves are not stored in this repository. It needs `protoc` and `flatc` 25.9.23; the protoc plugins are built from the package's pinned dependencies.
-- `Scripts/update-model-specs.sh` refreshes the bundled `models.json`. CI runs it weekly and opens a pull request when it changed.
+- `Scripts/update-model-specs.sh` refreshes the bundled `models.json`, and `Scripts/update-cloud-catalogs.sh` refreshes DrawThingsKit's Draw Things+ catalogs from [dt-models](https://github.com/kcjerrell/dt-models). CI runs both weekly and opens a pull request when they changed.
 
 ## Support Me
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-donate-yellow?logo=buymeacoffee&logoColor=white)](https://buymeacoffee.com/euphoriacyberware)
 
 ## Credits
 
-This Swift framework began as a port of the TypeScript implementation by KC Jerrell: [dt-grpc-ts](https://github.com/kcjerrell/dt-grpc-ts). Special thanks to KC for pioneering the TypeScript gRPC client for Draw Things, which served as the foundation for this Swift implementation.
+This Swift framework began as a port of the TypeScript implementation by KC Jerrell: [dt-grpc-ts](https://github.com/kcjerrell/dt-grpc-ts). Special thanks to KC for pioneering the TypeScript gRPC client for Draw Things, which served as the foundation for this Swift implementation. DrawThingsKit's bundled Draw Things+ model catalogs come from KC's [dt-models](https://github.com/kcjerrell/dt-models), which compiles the metadata of Draw Things' official and community models.
 
 ## License
 

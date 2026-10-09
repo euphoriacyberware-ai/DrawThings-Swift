@@ -14,7 +14,7 @@ package source (in `.build/checkouts/DrawThings-Swift/` or Xcode's package cache
 
 ```swift
 // Package.swift
-.package(url: "https://github.com/euphoriacyberware-ai/DrawThings-Swift", from: "2.2.0"),
+.package(url: "https://github.com/euphoriacyberware-ai/DrawThings-Swift", from: "2.3.0"),
 
 // target dependencies: add only what the app uses
 .product(name: "DrawThingsClient", package: "DrawThings-Swift"),    // always

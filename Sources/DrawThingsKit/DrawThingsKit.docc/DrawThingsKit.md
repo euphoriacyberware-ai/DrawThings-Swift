@@ -42,6 +42,7 @@ the first time profiles are loaded. Pass your own ``SecretStore`` to keep them e
 ``ModelsManager`` lists the checkpoints, LoRAs, ControlNets, textual inversions and upscalers the
 server reports when model browsing is on. With ``ModelsManager/bridgeMode`` it adds the official
 and community models available through Draw Things+ (``CloudModels``, bundled with the package).
+Models Draw Things has replaced have ``CheckpointModel/deprecated`` set; the app hides them.
 Compatibility filters such as ``ModelsManager/compatibleLoRAs`` follow the selected checkpoint's
 version.
 

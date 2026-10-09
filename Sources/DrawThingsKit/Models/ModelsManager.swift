@@ -28,12 +28,14 @@ public struct CheckpointModel: Identifiable, Codable, Hashable, Sendable {
     public let autoencoder: String?
     public let textEncoder: String?
     public let clipEncoder: String?
+    /// True for models Draw Things has replaced; the app hides them from its model list.
+    public let deprecated: Bool?
 
     /// The source of this model (local, official, or community).
     public var source: ModelSource
 
     enum CodingKeys: String, CodingKey {
-        case name, file, version, prefix, modifier, note, autoencoder, source
+        case name, file, version, prefix, modifier, note, autoencoder, deprecated, source
         case defaultScale = "default_scale"
         case textEncoder = "text_encoder"
         case clipEncoder = "clip_encoder"
@@ -51,6 +53,7 @@ public struct CheckpointModel: Identifiable, Codable, Hashable, Sendable {
         autoencoder = try container.decodeIfPresent(String.self, forKey: .autoencoder)
         textEncoder = try container.decodeIfPresent(String.self, forKey: .textEncoder)
         clipEncoder = try container.decodeIfPresent(String.self, forKey: .clipEncoder)
+        deprecated = try container.decodeIfPresent(Bool.self, forKey: .deprecated)
         source = try container.decodeIfPresent(ModelSource.self, forKey: .source) ?? .local
     }
 
@@ -65,6 +68,7 @@ public struct CheckpointModel: Identifiable, Codable, Hashable, Sendable {
         autoencoder: String? = nil,
         textEncoder: String? = nil,
         clipEncoder: String? = nil,
+        deprecated: Bool? = nil,
         source: ModelSource = .local
     ) {
         self.name = name
@@ -77,6 +81,7 @@ public struct CheckpointModel: Identifiable, Codable, Hashable, Sendable {
         self.autoencoder = autoencoder
         self.textEncoder = textEncoder
         self.clipEncoder = clipEncoder
+        self.deprecated = deprecated
         self.source = source
     }
 
@@ -169,12 +174,14 @@ public struct ControlNetModel: Identifiable, Codable, Hashable, Sendable {
     public let file: String
     public let version: String?
     public let prefix: String?
+    /// True for controls Draw Things has replaced; the app hides them from its list.
+    public let deprecated: Bool?
 
     /// The source of this model (local, official, or community).
     public var source: ModelSource
 
     enum CodingKeys: String, CodingKey {
-        case name, file, version, prefix, source
+        case name, file, version, prefix, deprecated, source
     }
 
     public init(from decoder: Decoder) throws {
@@ -183,6 +190,7 @@ public struct ControlNetModel: Identifiable, Codable, Hashable, Sendable {
         file = try container.decode(String.self, forKey: .file)
         version = try container.decodeIfPresent(String.self, forKey: .version)
         prefix = try container.decodeIfPresent(String.self, forKey: .prefix)
+        deprecated = try container.decodeIfPresent(Bool.self, forKey: .deprecated)
         source = try container.decodeIfPresent(ModelSource.self, forKey: .source) ?? .local
     }
 
@@ -191,12 +199,14 @@ public struct ControlNetModel: Identifiable, Codable, Hashable, Sendable {
         file: String,
         version: String? = nil,
         prefix: String? = nil,
+        deprecated: Bool? = nil,
         source: ModelSource = .local
     ) {
         self.name = name
         self.file = file
         self.version = version
         self.prefix = prefix
+        self.deprecated = deprecated
         self.source = source
     }
 

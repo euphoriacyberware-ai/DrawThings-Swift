@@ -1,9 +1,11 @@
-name: Update model specs
+name: Update model data
 
-# Refreshes the bundled model specification snapshot
-# (Sources/DrawThingsClient/Resources/models.json) from the live list the Draw Things app
-# downloads, and opens a pull request when it changed. Merge it and tag a patch release so
-# new models work without a runtime network request.
+# Refreshes the bundled model data and opens a pull request when it changed:
+# - the model specification snapshot (Sources/DrawThingsClient/Resources/models.json) from the
+#   live list the Draw Things app downloads;
+# - DrawThingsKit's Draw Things+ catalogs (Sources/DrawThingsKit/Resources/*_models.json) from
+#   the lists kcjerrell/dt-models publishes.
+# Merge it and tag a patch release so new models work without a runtime network request.
 
 on:
   schedule:
@@ -19,12 +21,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - name: Refresh models.json
+      - name: Refresh model data
         id: refresh
         run: |
           {
             echo 'summary<<EOF'
             Scripts/update-model-specs.sh
+            Scripts/update-cloud-catalogs.sh
             echo 'EOF'
           } >> "$GITHUB_OUTPUT"
       - name: Open pull request
@@ -32,15 +35,20 @@ jobs:
         with:
           branch: automation/update-model-specs
           delete-branch: true
-          commit-message: Update bundled model specs
-          title: Update bundled model specs
+          commit-message: Update bundled model data
+          title: Update bundled model data
           body: |
-            Automated refresh of `Sources/DrawThingsClient/Resources/models.json` from
-            https://models.drawthings.ai/models.json.
+            Automated refresh of the bundled model data:
+            - `Sources/DrawThingsClient/Resources/models.json` from https://models.drawthings.ai/models.json
+            - `Sources/DrawThingsKit/Resources/official_models.json` and `community_models.json` from
+              https://github.com/kcjerrell/dt-models
 
             ```
             ${{ steps.refresh.outputs.summary }}
             ```
 
             After merging, tag a patch release so clients pick up the new models.
-          add-paths: Sources/DrawThingsClient/Resources/models.json
+          add-paths: |
+            Sources/DrawThingsClient/Resources/models.json
+            Sources/DrawThingsKit/Resources/official_models.json
+            Sources/DrawThingsKit/Resources/community_models.json
