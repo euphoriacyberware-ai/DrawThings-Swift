@@ -32,11 +32,12 @@ let request = configuration.makeRequest(image: nil, mask: nil, hints: [])
 Filled from the server's echo when model browsing is on. `localCheckpoints`, `localLoRAs`,
 `localControlNets`, `localTextualInversions`, `localUpscalers`. With `bridgeMode = true` (default)
 the lists (`checkpoints`, `loras`, `controlNets`, `textualInversions`, `upscalers`) also include the
-official and community models available through Draw Things+ (`CloudModels`, bundled). `baseModels`,
+official and community models available through Draw Things+ (`CloudModels`, bundled; hide entries
+with `deprecated == true` in pickers, as Draw Things does). `baseModels`,
 `refinerModels`, `selectedCheckpoint`, `compatibleLoRAs`/`compatibleControlNets`/
 `compatibleTextualInversions` (matching the checkpoint's version), `checkpoint(forFile:)`,
 `modelFamily(forFile:)`. Model types: `CheckpointModel` (`name`, `file`, `version`, `family`,
-`framesPerSecond`, `audioSampleRate`, `source`), `LoRAModel`, `ControlNetModel`,
+`framesPerSecond`, `audioSampleRate`, `source`, `deprecated`), `LoRAModel`, `ControlNetModel`,
 `TextualInversionModel`, `UpscalerModel`; `ModelSource` is `.local`, `.official` or `.community`.
 
 ## ConfigurationManager

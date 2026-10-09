@@ -3,6 +3,20 @@
 All notable changes to DrawThings-Swift (formerly DT-gRPC-Swift-Client) are documented here. The project follows
 [Semantic Versioning](https://semver.org).
 
+## 2.3.0 — 2026-10-09
+
+### Added
+- DrawThingsKit: `CheckpointModel.deprecated` and `ControlNetModel.deprecated`, true for models
+  Draw Things has replaced (the app hides them from its lists).
+- `Scripts/update-cloud-catalogs.sh` refreshes DrawThingsKit's bundled Draw Things+ catalogs from
+  [dt-models](https://github.com/kcjerrell/dt-models); the weekly model-data workflow runs it with
+  the model-spec refresh.
+
+### Changed
+- DrawThingsKit's Draw Things+ catalogs are up to date (they were last refreshed in March): 129
+  official and 248 community checkpoints, including MiniMax H3, Krea 2, Qwen Image 2.1, Ideogram 4,
+  ERNIE Image, Anima, SeedVR2 and the 8-bit S variants. Entries are sorted by name.
+
 ## 2.2.0 — 2026-09-28
 
 ### Added

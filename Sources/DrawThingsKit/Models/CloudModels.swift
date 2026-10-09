@@ -35,6 +35,10 @@ private struct CloudModelCatalog: Codable {
 /// - **Official**: Built-in models from Draw Things ModelZoo (available on Community and DrawThings+ plans)
 /// - **Community**: User-contributed models from the community-models repository
 ///
+/// The bundled lists are refreshed by `Scripts/update-cloud-catalogs.sh` from
+/// [dt-models](https://github.com/kcjerrell/dt-models). Entries with `deprecated == true` are
+/// models Draw Things has replaced and hides from its lists.
+///
 /// Usage:
 /// ```swift
 /// // Get all official checkpoints

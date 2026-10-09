@@ -30,7 +30,8 @@ struct GenerateView: View {
                 Toggle("Include Draw Things+ models", isOn: $models.bridgeMode)
                 Picker("Model", selection: $configuration.selectedCheckpoint) {
                     Text(configuration.activeConfiguration.model).tag(CheckpointModel?.none)
-                    ForEach(models.baseModels) { checkpoint in
+                    // Draw Things hides models it has replaced.
+                    ForEach(models.baseModels.filter { $0.deprecated != true }) { checkpoint in
                         Text(checkpoint.name).tag(Optional(checkpoint))
                     }
                 }

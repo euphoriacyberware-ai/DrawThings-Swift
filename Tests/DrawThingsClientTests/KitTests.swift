@@ -239,6 +239,27 @@ struct ModelsManagerTests {
         #expect(CloudModels.officialCheckpoints.allSatisfy { $0.source == .official })
     }
 
+    /// The bundled catalogs (Scripts/update-cloud-catalogs.sh) decode completely: one bad entry
+    /// would empty a whole catalog, since it is decoded in one piece.
+    @Test(arguments: ["official_models", "community_models"])
+    func bundledCatalogsDecodeEveryEntry(name: String) throws {
+        let url = URL(filePath: #filePath).deletingLastPathComponent()
+            .appending(path: "../../Sources/DrawThingsKit/Resources/\(name).json")
+        let json = try #require(JSONSerialization.jsonObject(with: Data(contentsOf: url)) as? [String: [Any]])
+        let official = name == "official_models"
+        #expect((official ? CloudModels.officialCheckpoints : CloudModels.communityCheckpoints).count == json["checkpoints"]?.count)
+        #expect((official ? CloudModels.officialLoRAs : CloudModels.communityLoRAs).count == json["loras"]?.count)
+        #expect((official ? CloudModels.officialControlNets : CloudModels.communityControlNets).count == json["controlNets"]?.count)
+    }
+
+    @Test func catalogsMarkDeprecatedModels() {
+        #expect(CloudModels.officialCheckpoints.contains { $0.deprecated == true })
+        #expect(CloudModels.officialControlNets.contains { $0.deprecated == true })
+        #expect(CloudModels.allCheckpoints.contains { $0.file == "minimax_h3_fl2va_q8p.ckpt" && $0.family == .minimaxH3 })
+        let decoded = try? JSONDecoder().decode(CheckpointModel.self, from: Data(#"{"name":"Old","file":"old.ckpt","deprecated":true}"#.utf8))
+        #expect(decoded?.deprecated == true)
+    }
+
     @Test func bridgeModeMergesCloudFirst() {
         let manager = ModelsManager()
         let official = CloudModels.officialCheckpoints[0]

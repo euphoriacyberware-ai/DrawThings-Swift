@@ -68,6 +68,9 @@ xcodebuild build -scheme DrawThingsSwift-Package -destination 'generic/platform=
   regenerates the test server stubs in `Tests/DrawThingsClientTests/Generated/`.
 - `Sources/DrawThingsClient/Resources/models.json` is the bundled model-spec snapshot, refreshed
   by `Scripts/update-model-specs.sh` (and weekly by CI). Don't edit entries by hand.
+- `Sources/DrawThingsKit/Resources/official_models.json` and `community_models.json` are refreshed
+  by `Scripts/update-cloud-catalogs.sh` from [dt-models](https://github.com/kcjerrell/dt-models)
+  (also weekly). Don't edit them by hand.
 - `Sources/CFpzip` is vendored fpzip. Local changes are marked `DrawThingsClient` in comments; keep
   them minimal and marked.
 
